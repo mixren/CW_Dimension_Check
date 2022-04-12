@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.filedialog as fd
 
-class MyTemplatePanel:
+class MyDimcheckTemplatePanel:
     def __init__(self, root, frame):
         self.root = root
         self.frame = frame

@@ -33,7 +33,7 @@ class MyGeneratedListPanel:
         
 
     def select_generated_list(self):
-        path = fd.askopenfilename(title="Select Dimension Check Scan", filetypes=[('Text File', '*.txt')])
+        path = fd.askopenfilename(title="Select Generated Drawings List", filetypes=[('Text File', '*.txt')])
         if path:
             self.ent_generated.delete(0, tk.END)
             self.ent_generated.insert(0, path)

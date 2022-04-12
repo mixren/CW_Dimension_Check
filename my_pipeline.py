@@ -35,11 +35,11 @@ class MyPipeline:
             self.__name_process(name),
             self.__path_signature_process(path_signature)
         )
-        fails = [r for r in results if not is_successful(r)]
+        fails = [r.failure() for r in results if not is_successful(r)]
         if not fails:
-            return results
+            return Success(tuple(r.unwrap() for r in results))
         else:
-            return Failure('\n'.join([f.failure() for f in fails]))
+            return Failure('\n'.join([f for f in fails]))
 
 
     def __template_process(self, s: str)-> Result[str, str]:
@@ -56,14 +56,6 @@ class MyPipeline:
     
     def __pipe_line_process(self, s: str)-> Result[str,str]:
         return DrawingFullName.is_pipe_line_valid(s)
-        '''if len(s)<7:
-            return Failure(f"Project id is too short '{s}'")
-        elif len(s)>13:
-            return Failure(f"Project id is too long '{s}'")
-        elif "-" not in s:
-            return Failure("Project id should contain '-' symbol")
-        else:
-            return Success(s)'''
         
     
     def __spool_process(self, s: str)-> Result[str,str]:
@@ -79,14 +71,6 @@ class MyPipeline:
 
     def __drawing_short_process(self, s: str)-> Result[str, str]:
         return DrawingFullName.is_drawing_short_valid(s)
-        '''if len(s)>10:
-            return Failure(f"Drawing id is too long '{s}'")
-        elif len(s)<4:
-            return Failure(f"Drawing id is too short '{s}'")
-        elif "." not in s:
-            return Failure(f"Drawing id should contain '.' symbol")
-        else:
-            return Success(s)'''
 
 
     def __measurements_process(self, s: str)-> Result[list, str]:
@@ -97,7 +81,7 @@ class MyPipeline:
         len_five = list(map(len,lst))[0]==5
         if not all([same_len, len_five]):
             return Failure(f"Measurements field incorrect input")
-        return lst
+        return Success(lst)
 
     
     def __date_process(self, s: str)-> Result[str, str]:
@@ -121,7 +105,7 @@ class MyPipeline:
         return Failure(f"Signature .png file not found in '{s}'")
 
 
-    def my_filter(
+    '''def my_filter(
                 template_file="",
                 pipe_line_folder="",
                 pipe_line="",
@@ -152,7 +136,7 @@ class MyPipeline:
         if not all(filtered):
             return False
 
-        return True
+        return True'''
 
 
     def __measurements_split_into_list(self, ms: str)->list:

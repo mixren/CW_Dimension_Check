@@ -1,10 +1,10 @@
 import tkinter as tk
-from panels.my_template_panel import MyTemplatePanel
-from panels.my_pipe_line_panel import MyPipeLinePanel
-from panels.my_drawing_panel import MyDrawingPanel
-from panels.my_spool_panel import MySpoolPanel
-from panels.my_measurement_panel import MyMeasurementPanel
-from panels.my_rest_panel import MyRestPanel
+from panels.main.my_dimcheck_template_panel import MyDimcheckTemplatePanel
+from panels.main.my_pipe_line_panel import MyPipeLinePanel
+from panels.main.my_drawing_panel import MyDrawingPanel
+from panels.main.my_spool_panel import MySpoolPanel
+from panels.main.my_measurement_panel import MyMeasurementPanel
+from panels.main.my_rest_panel import MyRestPanel
 from panels.my_menu_panel import MyMenuPanel
 from managers.generator_manager import GeneratorManager
 from my_pipeline import MyPipeline
@@ -44,7 +44,7 @@ class MyTkWindow:
         self.lbl_result = tk.Label(master=self.root, width=30, fg="grey", font=('Arial', 10))
         self.lbl_result.grid(row=5, column=0)
 
-        self.template_panel = MyTemplatePanel(self.root, self.frm_template)
+        self.template_panel = MyDimcheckTemplatePanel(self.root, self.frm_template)
         self.pipe_line_panel = MyPipeLinePanel(self.root, self.frm_pipe_line_folder)
         self.drawing_panel = MyDrawingPanel(self.root, self.frm_spool_drawing_left)
         self.spool_panel = MySpoolPanel(self.root, self.frm_spool_drawing_right)

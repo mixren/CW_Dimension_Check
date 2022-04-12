@@ -1,8 +1,8 @@
 import tkinter as tk
 from returns.pipeline import is_successful
-from panels.my_scan_panel import MyScanPanel
-from panels.my_generated_list_panel import MyGeneratedListPanel
-from panels.my_year_folder_panel import MyYearFolderPanel
+from panels.scan_split.my_scan_panel import MyScanPanel
+from panels.scan_split.my_generated_list_panel import MyGeneratedListPanel
+from panels.scan_split.my_year_folder_panel import MyYearFolderPanel
 from managers.split_scan_manager import SplitScanManager
 
 class MySplitScanWindow:
@@ -13,15 +13,16 @@ class MySplitScanWindow:
         self.root = root
 
         self.root.title(self.TITLE)
-        
+        self.root.grid_columnconfigure(0, weight=1)  # the line I've added
+
         self.frm_year_folder = tk.Frame(master=self.root)
-        self.frm_year_folder.grid(row=0, column=0, pady=20, padx=50)
+        self.frm_year_folder.grid(row=0, column=0, pady=20, padx=50, sticky='w')
 
         self.frm_scan = tk.Frame(master=self.root)
-        self.frm_scan.grid(row=1, column=0, pady=6, padx=50)
+        self.frm_scan.grid(row=1, column=0, pady=6, padx=50, sticky='w')
  
         self.frm_generated_list = tk.Frame(master=self.root)
-        self.frm_generated_list.grid(row=2, column=0, pady=6, padx=50)
+        self.frm_generated_list.grid(row=2, column=0, pady=6, padx=50, sticky='w')
 
         self.year_folder_panel = MyYearFolderPanel(self.root, self.frm_year_folder)
         self.scan_panel = MyScanPanel(self.root, self.frm_scan)

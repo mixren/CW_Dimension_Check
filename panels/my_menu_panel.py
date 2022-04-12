@@ -1,6 +1,7 @@
 import tkinter as tk
 from managers.generated_drawings_manager import GeneratedDrawingsManager
 from windows.my_split_scan_window import MySplitScanWindow
+from windows.my_about_window import MyAboutWindow
 
 class MyMenuPanel:
 
@@ -11,13 +12,13 @@ class MyMenuPanel:
         gdm = GeneratedDrawingsManager()
 
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Generated list", command=gdm.open_generated_list_txt)
-        self.filemenu.add_command(label="Split scan", command=self.split_scan_window)
-        self.filemenu.add_command(label="About", command=self.show_about)
+        self.filemenu.add_command(label="Split Scan", command=self.open_split_scan_window)
+        self.filemenu.add_command(label="Show Generated List", command=gdm.open_generated_list_txt)
+        self.filemenu.add_command(label="About", command=self.open_about_window)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
 
-    def split_scan_window(self):
+    def open_split_scan_window(self):
         global w
         try:
             if w.state() == "normal": w.focus()
@@ -26,5 +27,11 @@ class MyMenuPanel:
             MySplitScanWindow(w)
     
 
-    def show_about():
-        pass
+    def open_about_window(self):
+        #window = tk.Toplevel(self.root)
+        #MyAboutWindow(window)
+        import os
+        try:
+            os.startfile(os.path.abspath('README.txt'))
+        except Exception as e:
+            print(f"Can't open a file. {e}")
