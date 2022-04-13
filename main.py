@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from managers.generator_manager import GeneratorManager
 from windows.my_main_window import *
 

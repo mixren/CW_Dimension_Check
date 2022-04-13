@@ -39,6 +39,6 @@ class GeneratedDrawingsManager:
                 drawings = drawings[::-1] if is_reversed else drawings
                 return Success(drawings)
         except Exception as e:
-            return Failure(f"Can't open the file. {e}")
+            return Failure(f"Can't open the .txt file. {e}")
 
 

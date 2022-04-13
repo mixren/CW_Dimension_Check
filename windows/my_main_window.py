@@ -41,7 +41,7 @@ class MyTkWindow:
         self.btn_generate.grid(row=4, column=0, pady=14)
 
         # Result Label
-        self.lbl_result = tk.Label(master=self.root, width=30, fg="grey", font=('Arial', 10))
+        self.lbl_result = tk.Label(master=self.root, fg="grey", font=('Arial', 10))
         self.lbl_result.grid(row=5, column=0)
 
         self.template_panel = MyDimcheckTemplatePanel(self.root, self.frm_template)

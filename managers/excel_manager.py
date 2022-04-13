@@ -1,5 +1,6 @@
 from returns.result import Result, Success, Failure
 from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 import os
 
 class ExcelManager:
@@ -65,7 +66,55 @@ class ExcelManager:
         
         return Success(True)
 
+
+    def fill_stiki_po_spulam_xlsx(self, path_stiki_xlsx: str, part_names: list, date: str)-> Result[bool, str]:
+        try:
+            wb = load_workbook(path_stiki_xlsx)
+        except Exception as e:
+            return Failure(f"Failed to open Excel file. {str(e)}")
+            
+        ws = wb.active
+        header = ws[1]
+
+        col_part = self.find_column_containing_str(header, 'part no')
+        col_isometric = self.find_column_containing_str_excluding_str(header, 'isometric', 'draw')
+        col_date = self.find_column_containing_str(header, 'date')
+
+        for part in part_names:
+            row_part = self.find_row_containing_str(ws[col_part], part.name_with_zeros())
+            if row_part:
+                ws[f'{col_isometric}{row_part}'] = 'OK'
+                ws[f'{col_date}{row_part}'] = date
+
+        try:
+            wb.save(filename=path_stiki_xlsx)
+        except Exception as e:
+            return Failure("Failed to save xlsx file. It might exist already and be opened. " + str(e))
+        
+        return Success(True)
+
     
+    def find_column_containing_str(self, row, s: str):
+        for cell in row:
+            if cell.value is not None: 
+                if s.lower() in cell.value.lower():
+                    return get_column_letter(cell.column)
+        return None
+    
+    def find_row_containing_str(self, col, s: str):
+        for cell in col:
+            if cell.value is not None: #We need to check that the cell is not empty.
+                if s.lower() in cell.value.lower(): #Check if the value of the cell contains the string
+                    return cell.row
+        return None
+    
+    def find_column_containing_str_excluding_str(self, row, s_cont: str, s_excl: str):
+        for cell in row:
+            if cell.value is not None:
+                if s_cont.lower() in cell.value.lower() and s_excl.lower() not in cell.value.lower():
+                    return get_column_letter(cell.column)
+        return None
+
     '''
     def generate_converted_xml_thread(file=""):
         try:

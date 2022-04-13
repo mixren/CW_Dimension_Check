@@ -1,7 +1,7 @@
 import tkinter as tk
 from managers.generated_drawings_manager import GeneratedDrawingsManager
 from windows.my_split_scan_window import MySplitScanWindow
-from windows.my_about_window import MyAboutWindow
+from windows.my_stiki_po_spulam_window import MyStikiPoSpulamWindow
 
 class MyMenuPanel:
 
@@ -13,6 +13,7 @@ class MyMenuPanel:
 
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Split Scan", command=self.open_split_scan_window)
+        self.filemenu.add_command(label="В Таблицу Стыки по Спулам", command=self.open_stiki_po_spulam)
         self.filemenu.add_command(label="Show Generated List", command=gdm.open_generated_list_txt)
         self.filemenu.add_command(label="About", command=self.open_about_window)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
@@ -25,6 +26,15 @@ class MyMenuPanel:
         except:
             w = tk.Toplevel(self.root)
             MySplitScanWindow(w)
+
+
+    def open_stiki_po_spulam(self):
+        global w_stiki
+        try:
+            if w_stiki.state() == "normal": w.focus()
+        except:
+            w_stiki = tk.Toplevel(self.root)
+            MyStikiPoSpulamWindow(w_stiki)
     
 
     def open_about_window(self):
