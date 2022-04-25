@@ -19,20 +19,27 @@ class PdfManager:
         except Exception as e:
             return Failure(f"Failed to read the signature image. {str(e)}")
         
+        page = pdf[0]
+
         '''The higher w , the more right-sided the image will be positioned 
            The higher h, the less the distance to the bottom of the page
            The higher x, the bigger image gets'''
     
-        x = 30
-        shift = 15
+        w_max, h_max = (page.mediabox.width, page.mediabox.height)
+        w, h = (w_max*0.88, h_max*0.395)
+        w_b , h_b = (w, h_max*0.829)
+        x = h_max*0.05
+        shift = x*0.5
+
+        '''x       = 30
+        shift   = 15
         w, h     = (700, 242)
-        w_b, h_b = (w, 507)
+        w_b, h_b = (w, 507)'''
         
         # Rectangles for signatures
         rects = [fitz.Rect(w, h+(shift*i), w+x, h+(shift*i)+x) for i in range(measurements_count)]
         rects.append(fitz.Rect(w_b, h_b, w_b+x, h_b+x))  # bottom signature
 
-        page = pdf[0]
         if not page.is_wrapped:
             page.wrap_contents()
         for r in rects:

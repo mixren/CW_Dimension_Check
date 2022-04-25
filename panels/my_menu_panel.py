@@ -31,7 +31,7 @@ class MyMenuPanel:
     def open_stiki_po_spulam(self):
         global w_stiki
         try:
-            if w_stiki.state() == "normal": w.focus()
+            if w_stiki.state() == "normal": w_stiki.focus()
         except:
             w_stiki = tk.Toplevel(self.root)
             MyStikiPoSpulamWindow(w_stiki)
