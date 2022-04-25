@@ -29,7 +29,7 @@ class PdfManager:
         w, h = (w_max*0.88, h_max*0.395)
         w_b , h_b = (w, h_max*0.829)
         x = h_max*0.05
-        shift = x*0.5
+        shift = x*0.49
 
         '''x       = 30
         shift   = 15
