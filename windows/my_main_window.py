@@ -76,6 +76,9 @@ class MyTkWindow:
 
     def generate(self):
         from returns.pipeline import is_successful
+        from models.drawing_full_name import DrawingFullName
+        import os 
+        from tkinter import messagebox
 
         template_path = self.template_panel.ent_template.get()
         pipe_line_folder = self.pipe_line_panel.ent_pipe_line_folder.get()
@@ -102,6 +105,20 @@ class MyTkWindow:
         if not is_successful(processed_input):
             self.lbl_result.config(text=f"Failed to generate file\n{processed_input.failure()}", fg="red")
             return
+        
+        drawing_full_name = DrawingFullName.from_valid_input(pipe_line, drawing_short)
+        dim_check_path_res = GeneratorManager.find_dimcheck_path(pipe_line_folder, drawing_full_name)
+        if not is_successful(dim_check_path_res):
+            self.lbl_result.config(text=f"Failed to generate file\n{dim_check_path_res.failure()}", fg="red")
+            return
+
+        pdf_file = os.path.join(dim_check_path_res.unwrap(), drawing_full_name.name_signed_pdf())
+        if os.path.exists(pdf_file):
+            response = messagebox.askokcancel("askokcancel", f"File {drawing_full_name.name_signed_pdf()} already exists. Overwrite it?")
+            if response != 1:
+                print(f"Generation cancelled for {drawing_full_name.name_with_zeros()}")
+                self.lbl_result.config(text=f"Cancelled for {drawing_full_name.name_with_zeros()}", fg="grey")
+                return
 
         res = GeneratorManager.generate_files(
             processed_input.unwrap()[0],
@@ -127,10 +144,10 @@ class MyTkWindow:
             path_signature)'''
 
         if is_successful(res):
-            self.lbl_result.config(text=f"{pipe_line}-{drawing_short}.00 successfully generated", fg="green")
+            self.lbl_result.config(text=f"{drawing_full_name.name_with_zeros()} successfully generated", fg="green")
             self.measurement_panel.txt_measurement.delete("1.0", tk.END)
             self.drawing_panel.ent_drawing.focus_set()
-            print(f"Success. {pipe_line}-{drawing_short}.00")
+            print(f"Success. {drawing_full_name.name_with_zeros()}")
 
         else:
             self.lbl_result.config(text=f"Failed to generate file\n{res.failure()}", fg="red")

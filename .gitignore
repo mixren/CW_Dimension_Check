@@ -1,4 +1,7 @@
-.venv
+.venv/
 exclude/
 __pycache__/
 repo/
+dist/
+build/
+*.spec

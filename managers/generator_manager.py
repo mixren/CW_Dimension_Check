@@ -100,6 +100,13 @@ class GeneratorManager:
         return True'''
 
 
+    def find_dimcheck_path(pipe_line_folder: str, drawing_full_name: DrawingFullName)-> Result[str, str]:
+        res_path = FileExplorerManager.get_first_dir_path_containing_text(pipe_line_folder, drawing_full_name.dir_project_spool_name())
+        if not is_successful(res_path):
+            return res_path
+        return Success(FileExplorerManager.into_dimcheck_dir(res_path.unwrap()))
+
+
     def generate_files(
         template_file="",
         pipe_line_folder="",
@@ -113,13 +120,20 @@ class GeneratorManager:
     )-> Result[bool, str]:
         '''Input is assumed to be valid'''
         
+        '''
         drawing_full_name = DrawingFullName.from_valid_input(pipe_line, drawing_short)
         drawing = drawing_full_name.name_with_zeros()
         res_path = FileExplorerManager.get_first_dir_path_containing_text(pipe_line_folder, drawing_full_name.dir_project_spool_name())
         if not is_successful(res_path):
             return res_path
-        dim_check_path = FileExplorerManager.into_dimcheck_dir(res_path.unwrap())
-        excel_file = os.path.join(dim_check_path, drawing_full_name.name_xlsx())
+        dim_check_path = FileExplorerManager.into_dimcheck_dir(res_path.unwrap())'''
+
+        drawing_full_name = DrawingFullName.from_valid_input(pipe_line, drawing_short)
+        dim_check_path_res = GeneratorManager.find_dimcheck_path(pipe_line_folder, drawing_full_name)
+        if not is_successful(dim_check_path_res):
+            return dim_check_path_res
+        drawing = drawing_full_name.name_with_zeros()
+        excel_file = os.path.join(dim_check_path_res.unwrap(), drawing_full_name.name_xlsx())
         pdf_file_name = drawing_full_name.name_signed_pdf()
 
         res_create_xlsx = ExcelManager.create_xlsx(
@@ -137,11 +151,14 @@ class GeneratorManager:
         res_convert = ExcelManager.convert_xlsx_to_pdf(excel_file, pdf_file_name)
         if not is_successful(res_convert):
             return res_convert
+
         res_add_sig = PdfManager.add_signature_to_pdf(os.path.join(os.path.dirname(excel_file), pdf_file_name), path_signature, len(lst_measurements))
         if not is_successful(res_add_sig):
             return res_add_sig
+
         gdm=GeneratedDrawingsManager()
         res_update_txt = gdm.update_with(drawing)
         if not is_successful(res_update_txt):
             return res_update_txt
+
         return Success(True)
