@@ -42,7 +42,7 @@ class MySplitScanWindow:
         project_year_path = self.year_folder_panel.ent_year_folder.get()
         path_pdf = self.scan_panel.ent_scan.get()
         list_names = self.generated_list_panel.ent_generated.get()
-        is_reversed = self.generated_list_panel.var_reversed
+        is_reversed = self.generated_list_panel.var_reversed.get()
         start = time.time()
         res = self.ssm.do(project_year_path, path_pdf, list_names, is_reversed)
         end = time.time()

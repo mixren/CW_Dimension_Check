@@ -8,7 +8,7 @@ class SplitScanManager:
         self.gdm = GeneratedDrawingsManager()
         self.pm = PdfManager()
         
-    def do(self, path_root, path_pdf, path_drawing_list_txt, is_reversed)-> Result[str, str]:
+    def do(self, path_root, path_pdf, path_drawing_list_txt, is_reversed:int)-> Result[str, str]:
         res_lst_drawing_names = self.gdm.get_list_drawing_names(path_drawing_list_txt, is_reversed)
         if not is_successful(res_lst_drawing_names):
             return res_lst_drawing_names

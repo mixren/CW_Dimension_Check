@@ -30,7 +30,7 @@ class GeneratedDrawingsManager:
         return Success(self.PATH_TXT) if os.path.exists(self.PATH_TXT) else Failure(False)
 
 
-    def get_list_drawing_names(self, file_path, is_reversed)-> Result[list[DrawingFullName], str]:
+    def get_list_drawing_names(self, file_path, is_reversed:int)-> Result[list[DrawingFullName], str]:
         try:
             with open(file_path, mode='r') as doc:
                 s = doc.read()

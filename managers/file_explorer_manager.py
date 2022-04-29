@@ -27,6 +27,9 @@ class FileExplorerManager:
         '''Get into the folder and create if it doesn't exist'''
         dim_check_path = os.path.join(path, dir)
         if not os.path.exists(dim_check_path):
-            os.makedirs(dim_check_path)
+            try:
+                os.makedirs(dim_check_path)
+            except:
+                print(f"Can't recreate existing directory {dim_check_path}")
         return dim_check_path
         
